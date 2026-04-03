@@ -1,0 +1,24 @@
+diff --git a/session.c b/session.c
+index 7289c46..2fd6a89 100644
+--- a/session.c
++++ b/session.c
+@@ -1403,12 +1403,18 @@ do_setusercontext(struct passwd *pw)
+ 
+ 		if (!in_chroot && options.chroot_directory != NULL &&
+ 		    strcasecmp(options.chroot_directory, "none") != 0) {
++			char *stripped_name;
+                         tmp = tilde_expand_filename(options.chroot_directory,
+ 			    pw->pw_uid);
+ 			snprintf(uidstr, sizeof(uidstr), "%llu",
+ 			    (unsigned long long)pw->pw_uid);
++			/* %w: username sans prefixe domaine (ex: "DOMAIN\user" -> "user") */
++			stripped_name = strchr(pw->pw_name, '\\');
++			stripped_name = (stripped_name != NULL) ?
++			    stripped_name + 1 : pw->pw_name;
+ 			chroot_path = percent_expand(tmp, "h", pw->pw_dir,
+-			    "u", pw->pw_name, "U", uidstr, (char *)NULL);
++			    "u", pw->pw_name, "U", uidstr,
++			    "w", stripped_name, (char *)NULL);
+ 			safely_chroot(chroot_path, pw->pw_uid);
+ 			free(tmp);
+ 			free(chroot_path);
