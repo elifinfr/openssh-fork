@@ -187,11 +187,11 @@ sshd.exe -d -f sshd_config
 → `Server listening on 127.0.0.1 port 2222` — démarrage nominal.
 
 ### Test 3 — Connexion SSH et résolution `%w`
-- Connexion avec compte `DESKTOP-H6NLES3\admin` (format `DOMAINE\utilisateur`)
-- Commande `whoami` → retourne `desktop-h6nles3\admin` ✓
+- Connexion avec compte `DESKTOP\admin` (format `DOMAINE\utilisateur`)
+- Commande `whoami` → retourne `desktop\admin` ✓
 - Log sshd : `Changed root directory to "E:\test\chroot\admin"` ✓
 
-Le domaine `DESKTOP-H6NLES3\` a été strippé, seul `admin` est retenu.
+Le domaine `DESKTOP\` a été strippé, seul `admin` est retenu.
 
 ### Test 4 — SFTP complet (upload / download)
 ```
